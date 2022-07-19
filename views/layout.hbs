@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script type="text/javascript" src="jscript/graph.js"></script>
+  </head>
+  <body >
+    {{{body}}}
+    <script>
+      function groupArrayOfObjects(list, key) {
+      return list.reduce(function(rv, x) {
+
+        (rv[x[key]] = rv[x[key]] || []).push(x);
+        return rv;
+      }, {});
+      };
+
+      let data_a =JSON.parse(document.getElementById('data').innerText);
+
+
+    const ctx = document.getElementById('myChart');
+    let data =data_a.data;
+    let final= [];
+    let dataMonth = [];
+
+    data.sort((a,b)=>{
+      let a_month = a.Date.split('-')[1];
+      let a_day = a.Date.split('-')[0];
+      let b_month = b.Date.split('-')[1];
+      let b_day = b.Date.split('-')[0];
+      return a_month-b_month ;
+    });
+
+    var groupedPeople=groupArrayOfObjects(data,"label");
+
+      data.map((row,index)=>{
+          dataMonth.push(row.Date);
+      });
+
+      dataMonth = dataMonth.sort((a,b)=>a.Data-b.Date)
+      dataMonth= [...new Set(dataMonth)]
+
+
+    let dataArray_a =[];
+    for (let [key, value] of Object.entries(groupedPeople)) {
+      let dataArray =[];
+      let flag=false;
+    dataMonth.map(mon=>{
+    let flag=  value.findIndex((f)=>f.Date == mon);
+    let dj = value.find((f)=>f.Date == mon);
+    if(flag>-1){
+      dataArray.push(value[flag]);
+    }else{
+      dataArray.push({
+        Date:mon,
+        data:0,
+        revenue:0
+      });
+    }
+    })
+    dataArray_a.push(dataArray);
+    }
+    function getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+    dataArray_a.map((data,i)=>{
+      newDataArray = [];
+      data.map((b)=>{
+        newDataArray.push(b.data);
+      })
+      let semiFinal = [];
+      semiFinal.data = newDataArray;
+      semiFinal.label = i+1;
+      semiFinal.borderColor= getRandomColor();
+      semiFinal.fill = false; 
+      final.push(semiFinal);
+    })
+
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: dataMonth,
+          datasets: final
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'Listings per month for each of the websites according to its Site Id'
+          }
+        }
+      });
+    </script>
+    
+
+  </body>
+</html>
+
+

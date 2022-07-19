@@ -1,0 +1,64 @@
+
+<div class="row">
+
+    <div class="col-sm-12 col-md-2"> </div>
+    <div class="col-sm-12 col-md-8"> 
+        <canvas id="myChart" width="400" height="400"></canvas>
+    </div>
+    </div>
+    </div>
+    <div id="data" hidden >{{title}}</div>
+    <div id="data" hidden >{{listing}}</div>
+    <div class="table-data">
+          
+    <h2> Data Table for Listing Data </h2>
+    <input type="text" name="utr_id" id="inputWord" value="" placeholder = "Enter sitename and click filter " style = "margin-bottom: 10px">
+
+    <button onclick="doSearch()">Filter</button>
+    
+    <table border="1">
+        <tr>
+            <th>Listing ID</th>
+            <th>Listing Month</th>
+            <th>Listing Date</th>
+            <th>Revenue </th>
+            <th>Site Name</th>
+        </tr>
+        
+        {{#each listing}}
+        <tr>
+            <td>{{label}}</td>
+            <td>{{Month}}</td>
+            <td>{{Date}}</td>
+            <td>{{revenue}}</td>
+            <td>{{title}}</td> 
+            
+        </tr>
+        {{/each}}     
+
+    </table>
+    <script>
+    function doSearch(value) {
+        baseUrl = "http://localhost:3000/chart";
+        let url = "";
+        if(value){
+            url = baseUrl+"?revenue="+value.value;
+        }else{
+            let word = document.querySelector('#inputWord').value;
+            url = baseUrl+"?sitename="+word;
+        }
+        
+         window.location = url;
+    }
+    </script>
+
+</div>
+ 
+<script>
+    
+</script>
+
+
+
+ 
+    
