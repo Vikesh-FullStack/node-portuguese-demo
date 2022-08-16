@@ -1,13 +1,17 @@
+const { Pool } = require('pg');
 const config = {
   db: {
-    host: 'http://test-instance-1-cluster.cluster-cys30lik4v4w.us-east-1.rds.amazonaws.com/',
+    host: 'localhost',
     port:  '5432',
-    user: 'test-assignment',
-    password:  'gfdjh24m,sddsf',
-    database:  'test_assignment',
+    password:  '',
+    database:  'portuguese',
   },
   listPerPage: 10,
 };
+const pool = new Pool(config);
+pool.on('error', function (err, client) {
+    console.error('idle client error', err.message, err.stack);
+});
 
 module.exports = config;
 

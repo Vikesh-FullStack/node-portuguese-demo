@@ -1,13 +1,10 @@
-const { Pool } = require('pg');
-const config = require('../../config');
-const pool = new Pool(config.db);
+var pg = require('pg');
+var conString = "postgres://postgres:Softuvo@1234@localhost:5432/portuguese";
 
+var client = new pg.Client(conString);
+client.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+  });
 
-async function query(query, params) {
-    const {rows, fields} = await pool.query(query, params);
-    return rows;
-}
-
-module.exports = {
-  query
-}
+module.exports = client;
